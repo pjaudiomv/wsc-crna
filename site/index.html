@@ -3,463 +3,805 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carolina Region — WSC 2026 Group CAR Voting Report</title>
+  <title>Carolina Region — WSC 2026 Group Conscience Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
+    /* ── TOKENS ─────────────────────────────────── */
     :root {
-      --blue-dark:  #1a3a5c;
-      --blue-mid:   #2563a8;
-      --blue-light: #3b82d4;
-      --green:      #16a34a;
-      --red:        #dc2626;
-      --yellow:     #ca8a04;
-      --gray-bg:    #f3f6fa;
-      --gray-card:  #ffffff;
-      --gray-border:#d1dae6;
-      --text:       #1e2a38;
-      --text-muted: #5a6a7e;
+      --bg:         #07090D;
+      --surface:    #0D1520;
+      --surface2:   #121E2E;
+      --border:     #1E3050;
+      --border2:    #263C5A;
+      --gold:       #E8A020;
+      --gold-dim:   #7A5410;
+      --yes:        #1FD07A;
+      --yes-dim:    #0C4D2B;
+      --no:         #FF4554;
+      --no-dim:     #5C1017;
+      --abs:        #4A6A88;
+      --text:       #EBF3FF;
+      --text-muted: #8AAEC8;
+      --text-faint: #4A6A88;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      background: var(--gray-bg);
+      background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.65;
+      min-height: 100vh;
+      /* subtle noise grain */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
     }
 
-    /* ── HEADER ── */
-    header {
-      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 100%);
-      color: #fff;
-      padding: 2.5rem 1.5rem 2rem;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    /* ── HEADER ─────────────────────────────────── */
+    .site-header {
+      position: relative;
+      background: linear-gradient(170deg, #0D1A2A 0%, #07090D 60%);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      padding: 0 1.5rem;
     }
-    header .badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      padding: .25rem .9rem;
-      margin-bottom: .9rem;
+    .site-header::before {
+      content: 'CAR';
+      position: absolute;
+      right: -2rem;
+      top: -1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(10rem, 22vw, 18rem);
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(232,160,32,0.08);
+      pointer-events: none;
+      letter-spacing: -.04em;
+      line-height: 1;
     }
-    header h1 { font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; }
-    header h2 { font-size: clamp(1rem, 2.5vw, 1.3rem); font-weight: 400; opacity: .85; margin-top: .4rem; }
-    header .subtitle { font-size: .88rem; opacity: .7; margin-top: .6rem; }
-
-    /* ── LAYOUT ── */
-    .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-
-    /* ── SECTION TITLES ── */
-    .section-title {
-      font-size: 1.35rem; font-weight: 700; color: var(--blue-dark);
-      border-left: 4px solid var(--blue-mid);
-      padding-left: .75rem; margin: 2.5rem 0 1.25rem;
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 3.5rem 0 3rem;
+      position: relative; z-index: 1;
+    }
+    .header-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.1rem;
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .header-eyebrow::after {
+      content: '';
+      flex: 1; max-width: 120px;
+      height: 1px; background: var(--gold-dim);
+    }
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin-bottom: .5rem;
+    }
+    .header-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .header-sub {
+      font-size: .9rem; color: var(--text-muted);
+      font-weight: 300; margin-bottom: 2.5rem;
+      letter-spacing: .04em;
+    }
+    .header-stats {
+      display: flex; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .hs-item { border-left: 2px solid var(--gold-dim); padding-left: 1rem; }
+    .hs-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 2rem; font-weight: 500;
+      color: var(--gold); line-height: 1;
+      display: block;
+    }
+    .hs-lbl {
+      font-size: .7rem; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--text-muted);
+      font-weight: 600; margin-top: .2rem;
     }
 
-    /* ── SUMMARY CARDS ── */
-    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-    .stat-card {
-      background: var(--gray-card);
-      border: 1px solid var(--gray-border);
-      border-radius: 12px;
-      padding: 1.25rem 1rem;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    /* ── NAV ────────────────────────────────────── */
+    .motion-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px);
     }
-    .stat-card .num { font-size: 2.2rem; font-weight: 800; color: var(--blue-mid); line-height: 1; }
-    .stat-card .lbl { font-size: .8rem; color: var(--text-muted); margin-top: .4rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
-
-    /* ── PARTICIPATION TABLE ── */
-    .table-wrap { overflow-x: auto; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
-    table { width: 100%; border-collapse: collapse; background: var(--gray-card); font-size: .88rem; }
-    thead { background: var(--blue-dark); color: #fff; }
-    thead th { padding: .75rem 1rem; text-align: left; font-weight: 600; letter-spacing: .04em; font-size: .8rem; text-transform: uppercase; white-space: nowrap; }
-    tbody tr { border-bottom: 1px solid var(--gray-border); }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: #eef4fb; }
-    tbody td { padding: .65rem 1rem; vertical-align: middle; }
-    tbody td:first-child { font-weight: 600; }
-
-    /* vote badge in table */
-    .vbadge { display: inline-flex; align-items: center; gap: .35rem; font-size: .78rem; font-weight: 700; padding: .18rem .55rem; border-radius: 999px; white-space: nowrap; }
-    .vbadge.yes  { background: #dcfce7; color: #15803d; }
-    .vbadge.no   { background: #fee2e2; color: #b91c1c; }
-    .vbadge.mix  { background: #fef9c3; color: #92400e; }
-    .vbadge.abs  { background: #f1f5f9; color: #64748b; }
-
-    /* ── DISCLAIMER BOX ── */
-    .note-box {
-      background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px;
-      padding: .9rem 1.1rem; font-size: .84rem; color: #78350f;
-      margin-bottom: 1.5rem;
+    .motion-nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex; align-items: center; gap: .25rem;
+      overflow-x: auto;
     }
-    .note-box strong { color: #92400e; }
-
-    /* ── MOTION CARDS ── */
-    .motion-card {
-      background: var(--gray-card);
-      border: 1px solid var(--gray-border);
-      border-radius: 14px;
-      padding: 1.75rem 1.75rem 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
-    }
-    .motion-header {
-      display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap;
-      margin-bottom: 1.25rem;
-    }
-    .motion-num {
+    .motion-nav-inner::-webkit-scrollbar { display: none; }
+    .nav-lbl {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; color: var(--text-faint);
+      letter-spacing: .1em; text-transform: uppercase;
+      white-space: nowrap; padding-right: .75rem;
+      border-right: 1px solid var(--border); margin-right: .25rem;
       flex-shrink: 0;
-      background: var(--blue-dark); color: #fff;
-      border-radius: 8px; padding: .35rem .75rem;
-      font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
     }
-    .motion-title { font-size: 1.02rem; font-weight: 700; color: var(--blue-dark); flex: 1; }
-    .motion-body { font-size: .92rem; color: var(--text); background: #f8fafc; border-left: 3px solid var(--blue-light); border-radius: 0 6px 6px 0; padding: .85rem 1rem; margin-bottom: 1rem; line-height: 1.65; }
-    .motion-maker { font-size: .81rem; color: var(--text-muted); font-style: italic; margin-bottom: 1.25rem; }
-
-    /* verdict banner */
-    .verdict {
-      display: inline-flex; align-items: center; gap: .55rem;
-      font-size: 1.05rem; font-weight: 800; border-radius: 8px;
-      padding: .55rem 1.1rem; margin-bottom: 1.5rem;
-      letter-spacing: .03em;
+    .nav-pill {
+      display: flex; align-items: center; gap: .45rem;
+      padding: .85rem .75rem;
+      text-decoration: none;
+      font-size: .75rem; font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      transition: color .2s;
+      border-bottom: 2px solid transparent;
+      flex-shrink: 0;
     }
-    .verdict.yes-v { background: #dcfce7; color: #15803d; border: 2px solid #86efac; }
-    .verdict.no-v  { background: #fee2e2; color: #b91c1c; border: 2px solid #fca5a5; }
-    .verdict .icon { font-size: 1.3rem; }
+    .nav-pill:hover { color: var(--text); }
+    .nav-pill.yes-pill { border-bottom-color: var(--yes); color: var(--yes); }
+    .nav-pill.no-pill  { border-bottom-color: var(--no);  color: var(--no); }
+    .nav-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .nav-dot.yes { background: var(--yes); }
+    .nav-dot.no  { background: var(--no); }
 
-    /* stats row */
-    .vote-stats { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; }
-    .vs-item { text-align: center; }
-    .vs-item .vs-num { font-size: 1.5rem; font-weight: 800; line-height: 1; }
-    .vs-item .vs-lbl { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
-    .vs-item.yes-c .vs-num { color: #16a34a; }
-    .vs-item.no-c  .vs-num { color: #dc2626; }
-    .vs-item.abs-c .vs-num { color: #94a3b8; }
-    .vs-sep { color: var(--gray-border); font-size: 1.5rem; }
-    .pct-bar-wrap { flex: 1; min-width: 180px; }
-    .pct-lbl { font-size: .75rem; color: var(--text-muted); margin-bottom: .3rem; }
-    .pct-bar { height: 10px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
-    .pct-fill { height: 100%; border-radius: 999px; transition: width .6s; }
-    .pct-fill.yes-f { background: #22c55e; }
+    /* ── MAIN LAYOUT ────────────────────────────── */
+    main { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
 
-    /* charts */
-    .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    @media (max-width: 600px) { .charts-row { grid-template-columns: 1fr; } }
-    .chart-box { background: #f8fafc; border: 1px solid var(--gray-border); border-radius: 10px; padding: 1rem; }
-    .chart-box h4 { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .75rem; text-align: center; }
-    .chart-canvas-wrap { position: relative; height: 220px; }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .section-label::before {
+      content: ''; width: 30px; height: 1px; background: var(--gold-dim);
+    }
 
-    /* area breakdown */
-    .area-breakdown { margin-top: 1.5rem; }
-    .area-breakdown summary { cursor: pointer; font-size: .88rem; font-weight: 700; color: var(--blue-mid); padding: .4rem 0; user-select: none; }
-    .area-breakdown summary:hover { color: var(--blue-dark); }
-    .area-tbl-wrap { overflow-x: auto; margin-top: .75rem; border-radius: 8px; border: 1px solid var(--gray-border); }
-    .area-tbl { width: 100%; border-collapse: collapse; font-size: .82rem; background: #fff; }
-    .area-tbl th { background: #eef4fb; color: var(--blue-dark); font-weight: 700; padding: .5rem .75rem; text-align: left; border-bottom: 1px solid var(--gray-border); }
-    .area-tbl td { padding: .45rem .75rem; border-bottom: 1px solid #f1f5f9; }
-    .area-tbl tr:last-child td { border-bottom: none; }
-    .area-tbl tr:hover td { background: #f8fafc; }
+    /* ── AREA GRID ──────────────────────────────── */
+    #participation { margin-bottom: 4rem; }
+    .participation-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .participation-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700; line-height: 1.1;
+    }
+    .motion-legend {
+      display: flex; gap: .6rem; align-items: center;
+      font-size: .7rem; color: var(--text-muted);
+    }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
+    .area-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--border);
+    }
+    .area-card {
+      background: var(--surface);
+      padding: 1.1rem 1.1rem 1rem;
+      transition: background .2s;
+    }
+    .area-card:hover { background: var(--surface2); }
+    .area-name {
+      font-size: .8rem; font-weight: 600;
+      color: var(--text); margin-bottom: .15rem;
+      line-height: 1.3;
+    }
+    .area-groups {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; color: var(--text-muted);
+      margin-bottom: .8rem;
+    }
+    .motion-dots { display: flex; gap: 4px; flex-wrap: wrap; }
+    .m-dot {
+      width: 22px; height: 22px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: .55rem; font-weight: 500;
+      cursor: default;
+    }
+    .m-dot.yes-d  { background: var(--yes-dim); color: var(--yes); }
+    .m-dot.no-d   { background: var(--no-dim);  color: var(--no); }
+    .m-dot.mix-d  { background: #2A2A0A; color: #B8A020; }
+
+    /* ── MOTION CARDS ───────────────────────────── */
+    .motion-section {
+      margin-bottom: 3.5rem;
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .motion-section.visible { opacity: 1; transform: none; }
+
+    .motion-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+    .motion-card-inner { padding: 2rem 2rem 1.75rem; }
+
+    /* big backdrop number */
+    .motion-bg-num {
+      position: absolute;
+      top: -1rem; right: 1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9rem; font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--border2);
+      line-height: 1; pointer-events: none;
+      user-select: none;
+    }
+
+    .motion-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: .8rem; position: relative; z-index: 1;
+    }
+    .motion-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 700; line-height: 1.2;
+      color: var(--text);
+      margin-bottom: .5rem;
+      position: relative; z-index: 1;
+    }
+    .motion-maker {
+      font-size: .76rem; color: var(--text-muted);
+      font-style: italic; margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+    }
+    .motion-text {
+      font-size: .9rem; color: var(--text);
+      border-left: 2px solid var(--border2);
+      padding: .9rem 1rem .9rem 1.25rem;
+      margin-bottom: 1.75rem;
+      background: rgba(255,255,255,0.02);
+      border-radius: 0 6px 6px 0;
+      line-height: 1.75;
+      position: relative; z-index: 1;
+    }
+
+    /* ── VERDICT BANNER ─────────────────────────── */
+    .verdict-banner {
+      display: flex; align-items: center;
+      gap: 1.25rem; padding: 1.1rem 1.5rem;
+      border-radius: 8px; margin-bottom: 1.75rem;
+      position: relative; z-index: 1;
+    }
+    .verdict-banner.yes-banner { background: var(--yes-dim); border: 1px solid #0F5A30; }
+    .verdict-banner.no-banner  { background: var(--no-dim);  border: 1px solid #6A1020; }
+    .verdict-icon {
+      font-size: 1.6rem; flex-shrink: 0; line-height: 1;
+    }
+    .verdict-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 700;
+      line-height: 1;
+    }
+    .verdict-banner.yes-banner .verdict-label { color: var(--yes); }
+    .verdict-banner.no-banner  .verdict-label { color: var(--no); }
+    .verdict-detail {
+      font-size: .78rem; color: var(--text-muted); margin-top: .2rem;
+    }
+    .verdict-pct {
+      margin-left: auto; flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 2.2rem; font-weight: 500;
+    }
+    .verdict-banner.yes-banner .verdict-pct { color: var(--yes); }
+    .verdict-banner.no-banner  .verdict-pct { color: var(--no); }
+
+    /* ── VOTE COUNTS ROW ────────────────────────── */
+    .vote-row {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 1.75rem; flex-wrap: wrap;
+      position: relative; z-index: 1;
+    }
+    .vote-count { text-align: center; }
+    .vote-count .vc-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 2.4rem; font-weight: 500; line-height: 1;
+      display: block;
+    }
+    .vote-count .vc-lbl {
+      font-size: .65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-top: .2rem;
+    }
+    .vote-count.vc-yes .vc-num { color: var(--yes); }
+    .vote-count.vc-yes .vc-lbl { color: #0C7040; }
+    .vote-count.vc-no  .vc-num { color: var(--no); }
+    .vote-count.vc-no  .vc-lbl { color: #8A2030; }
+    .vote-count.vc-abs .vc-num { color: var(--abs); }
+    .vote-count.vc-abs .vc-lbl { color: var(--text-faint); }
+    .vote-sep { color: var(--border2); font-size: 1.5rem; }
+    .pct-stack { flex: 1; min-width: 200px; }
+    .pct-row-label {
+      font-size: .7rem; color: var(--text-muted);
+      margin-bottom: .4rem;
+    }
+    .pct-track {
+      height: 8px; border-radius: 999px;
+      background: var(--border);
+      overflow: hidden; margin-bottom: .3rem;
+    }
+    .pct-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--yes) 0%, #10F08A 100%);
+      transition: width 1.2s cubic-bezier(.22,1,.36,1);
+      width: 0;
+    }
+    .pct-fill.no-fill { background: linear-gradient(90deg, var(--no) 0%, #FF8090 100%); }
+    .pct-val {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; color: var(--text-muted); text-align: right;
+    }
+
+    /* ── CHARTS ─────────────────────────────────── */
+    .charts-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 560px) { .charts-row { grid-template-columns: 1fr; } }
+    .chart-panel {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+    }
+    .chart-panel h4 {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: .9rem; text-align: center;
+    }
+    .chart-wrap { position: relative; height: 210px; }
+
+    /* ── AREA BREAKDOWN (collapsible) ───────────── */
+    details.breakdown {
+      border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    details.breakdown summary {
+      list-style: none; cursor: pointer;
+      padding: .9rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-muted);
+      display: flex; align-items: center; gap: .6rem;
+      transition: color .2s;
+    }
+    details.breakdown summary::-webkit-details-marker { display: none; }
+    details.breakdown summary:hover { color: var(--text); }
+    details.breakdown summary::before {
+      content: '▶'; font-size: .5rem;
+      transition: transform .2s;
+    }
+    details.breakdown[open] summary::before { transform: rotate(90deg); }
+
+    .bd-table-wrap { overflow-x: auto; padding: 0 2rem 1.5rem; }
+    .bd-table {
+      width: 100%; border-collapse: collapse;
+      font-size: .78rem;
+    }
+    .bd-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--text-muted); font-weight: 500;
+      padding: .5rem .75rem; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .bd-table td {
+      padding: .5rem .75rem;
+      border-bottom: 1px solid rgba(30,48,80,0.5);
+      color: var(--text);
+    }
+    .bd-table tr:last-child td { border-bottom: none; }
+    .bd-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: .3rem;
+      border-radius: 4px; padding: .18rem .5rem;
+      font-family: 'DM Mono', monospace; font-size: .72rem; font-weight: 500;
+      white-space: nowrap;
+    }
+    .pill.yes-p  { background: var(--yes-dim); color: var(--yes); }
+    .pill.no-p   { background: var(--no-dim);  color: var(--no); }
+    .pill.mix-p  { background: #2A2A0A; color: #C0A028; }
+    .pill.abs-p  { background: rgba(74,106,136,0.15); color: var(--abs); }
+
+    /* ── NOTE BOX ───────────────────────────────── */
+    .note-box {
+      background: rgba(232,160,32,0.06);
+      border: 1px solid var(--gold-dim);
+      border-radius: 8px; padding: .9rem 1.1rem;
+      font-size: .78rem; color: var(--text-muted);
+      margin-bottom: 2.5rem; line-height: 1.6;
+    }
+    .note-box strong { color: var(--gold); }
+
+    /* ── FOOTER ─────────────────────────────────── */
     footer {
-      text-align: center; font-size: .8rem; color: var(--text-muted);
-      padding: 2rem 1rem; border-top: 1px solid var(--gray-border);
-      margin-top: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .1em;
+      color: var(--text-faint);
     }
 
-    @media (max-width: 700px) {
-      .motion-card { padding: 1.25rem 1rem; }
-      .motion-header { flex-direction: column; gap: .5rem; }
+    /* ── ANIMATIONS ─────────────────────────────── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .header-inner > * {
+      opacity: 0;
+      animation: fadeSlideUp .7s ease forwards;
+    }
+    .header-eyebrow  { animation-delay: .1s; }
+    .header-title    { animation-delay: .25s; }
+    .header-sub      { animation-delay: .38s; }
+    .header-stats    { animation-delay: .5s; }
+
+    @media (max-width: 720px) {
+      .motion-card-inner { padding: 1.5rem 1.25rem 1.25rem; }
+      .verdict-pct { font-size: 1.6rem; }
+      .bd-table-wrap { padding: 0 1rem 1.25rem; }
+      details.breakdown summary { padding: .9rem 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="badge">WSC 2026 Participation Report</div>
-  <h1>Carolina Region (CAR)</h1>
-  <h2>Group Conscience &amp; Voting Tally</h2>
-  <p class="subtitle">World Service Conference 2026 &mdash; CAR Pre-Conference Assessment Report</p>
+<!-- ── HEADER ─────────────────────────────────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Carolina Region &mdash; WSC 2026</div>
+    <h1 class="header-title">Group <em>Conscience</em><br>Voting Report</h1>
+    <p class="header-sub">Pre-Conference Assessment &bull; World Service Conference 2026 &bull; April 2026</p>
+    <div class="header-stats">
+      <div class="hs-item">
+        <span class="hs-num" data-count="48">0</span>
+        <span class="hs-lbl">Group Responses</span>
+      </div>
+      <div class="hs-item">
+        <span class="hs-num" data-count="13">0</span>
+        <span class="hs-lbl">Areas Participating</span>
+      </div>
+      <div class="hs-item">
+        <span class="hs-num" data-count="5">0</span>
+        <span class="hs-lbl">Motions Voted On</span>
+      </div>
+      <div class="hs-item">
+        <span class="hs-num" data-count="3" style="color:var(--yes)">0</span>
+        <span class="hs-lbl">Likely YES</span>
+      </div>
+      <div class="hs-item">
+        <span class="hs-num" data-count="2" style="color:var(--no)">0</span>
+        <span class="hs-lbl">Likely NO</span>
+      </div>
+    </div>
+  </div>
 </header>
 
-<div class="container">
+<!-- ── STICKY NAV ─────────────────────────────────── -->
+<nav class="motion-nav" aria-label="Motion navigation">
+  <div class="motion-nav-inner">
+    <span class="nav-lbl">Jump to</span>
+    <a href="#motion-1" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 1 — IP #21</a>
+    <a href="#motion-2" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 2 — Strategic Plan</a>
+    <a href="#motion-3" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 3 — WCNA Cycle</a>
+    <a href="#motion-4" class="nav-pill no-pill"><span class="nav-dot no"></span>Motion 4 — Inmate Literature</a>
+    <a href="#motion-5" class="nav-pill no-pill"><span class="nav-dot no"></span>Motion 5 — AI Interpretation</a>
+  </div>
+</nav>
 
-  <!-- SUMMARY STATS -->
-  <h2 class="section-title">Participation Summary</h2>
-  <div class="stat-grid">
-    <div class="stat-card"><div class="num">49</div><div class="lbl">Total Responses</div></div>
-    <div class="stat-card"><div class="num">13</div><div class="lbl">Areas Participating</div></div>
-    <div class="stat-card"><div class="num">48</div><div class="lbl">Unique Groups</div></div>
-    <div class="stat-card"><div class="num">5</div><div class="lbl">Motions Voted On</div></div>
-    <div class="stat-card"><div class="num">3</div><div class="lbl">Likely YES</div></div>
-    <div class="stat-card"><div class="num">2</div><div class="lbl">Likely NO</div></div>
-  </div>
+<!-- ── MAIN ───────────────────────────────────────── -->
+<main>
 
-  <!-- AREA PARTICIPATION TABLE -->
-  <h2 class="section-title">Area Participation</h2>
-  <div class="note-box">
-    <strong>Note:</strong> Only areas with at least one group response are shown.
-    Abstentions are excluded from all vote percentage calculations &mdash; quorum is determined by Yes + No votes only.
-    A motion is considered <strong>Likely YES</strong> if &ge;80% of non-abstaining votes are in favor.
-    One duplicate submission was identified (Turning Point, Greater Columbia Area) and is reflected in the tally as received.
-  </div>
-  <div class="table-wrap">
-    <table id="area-table">
-      <thead>
-        <tr>
-          <th>Area</th>
-          <th>Groups</th>
-          <th>Motion 1</th>
-          <th>Motion 2</th>
-          <th>Motion 3</th>
-          <th>Motion 4</th>
-          <th>Motion 5</th>
-        </tr>
-      </thead>
-      <tbody id="area-tbody"></tbody>
-    </table>
-  </div>
+  <!-- AREA PARTICIPATION -->
+  <section id="participation">
+    <div class="participation-header">
+      <div>
+        <div class="section-label">Area Participation</div>
+        <h2 class="participation-title">13 Areas, 48 Groups</h2>
+      </div>
+      <div class="motion-legend">
+        <span class="legend-dot" style="background:var(--yes)"></span>Majority Yes
+        <span class="legend-dot" style="background:var(--no)"></span>Majority No
+        <span class="legend-dot" style="background:#B8A020"></span>Split
+      </div>
+    </div>
+
+    <div class="note-box">
+      <strong>Methodology:</strong> Abstentions count as <strong>non-supporting votes</strong> — they are included in the total vote denominator, which lowers the Yes percentage. A motion is deemed <strong>Likely YES</strong> if &ge;80% of all votes cast (Yes + No + Abstain) are in favor.
+    </div>
+
+    <div class="area-grid" id="area-grid"></div>
+  </section>
 
   <!-- MOTIONS -->
-  <h2 class="section-title">Motion Results</h2>
-  <div id="motions-container"></div>
+  <section id="motions-section">
+    <div class="section-label" style="margin-bottom:2rem;">Motion Results</div>
+    <div id="motions-container"></div>
+  </section>
 
-</div>
+</main>
 
 <footer>
-  Carolina Region &mdash; WSC 2026 CAR Voting Report &bull; Generated April 2026 &bull; 49 group responses across 13 areas
+  Carolina Region (CAR) &bull; WSC 2026 Group CAR Voting Report &bull; 48 responses across 13 areas &bull; Generated April 2026
 </footer>
 
+<!-- ── SCRIPT ──────────────────────────────────────── -->
 <script>
-// ─────────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────────
-
-const motions = [
+/* ─────────────────────────────────────────────────────
+   DATA
+───────────────────────────────────────────────────── */
+const MOTIONS = [
   {
     num: 1,
-    title: "Revised IP #21 — Staying Clean in Isolation",
-    text: "Approve the revised IP #21, Staying Clean in Isolation, contained in Addendum A, as Fellowship-approved recovery literature to replace the current IP #21, The Loner—Staying Clean in Isolation.",
-    maker: "Maker: World Board",
-    yes: 46, no: 2, abstain: 1
+    id: 'motion-1',
+    title: 'Revised IP #21 — Staying Clean in Isolation',
+    text: 'Approve the revised IP #21, Staying Clean in Isolation, contained in Addendum A, as Fellowship-approved recovery literature to replace the current IP #21, The Loner—Staying Clean in Isolation.',
+    maker: 'Maker: World Board',
+    yes: 45, no: 2, abstain: 1
   },
   {
     num: 2,
-    title: "2026–2029 NA World Services Strategic Plan",
-    text: "To adopt the collaboratively created 2026–2029 NA World Services Strategic Plan contained in Addendum B.",
-    maker: "Maker: World Board",
-    yes: 41, no: 5, abstain: 3
+    id: 'motion-2',
+    title: '2026–2029 NA World Services Strategic Plan',
+    text: 'To adopt the collaboratively created 2026–2029 NA World Services Strategic Plan contained in Addendum B.',
+    maker: 'Maker: World Board',
+    yes: 40, no: 5, abstain: 3
   },
   {
     num: 3,
-    title: "WCNA Every 5 Years",
-    text: "To hold the World Convention of Narcotics Anonymous (WCNA) every 5 years, beginning in 2028. The location to be determined by the World Board based on fiscal and geographic considerations that lend themselves to, at minimum, a revenue-neutral event. (The specific changes to the WCNA Guidelines in GWSNA are shown in Addendum C.)",
-    maker: "Maker: World Board",
-    yes: 42, no: 7, abstain: 0
+    id: 'motion-3',
+    title: 'WCNA Every 5 Years Beginning 2028',
+    text: 'To hold the World Convention of Narcotics Anonymous (WCNA) every 5 years, beginning in 2028. The location to be determined by the World Board based on fiscal and geographic considerations that lend themselves to, at minimum, a revenue-neutral event. (The specific changes to the WCNA Guidelines in GWSNA are shown in Addendum C.)',
+    maker: 'Maker: World Board',
+    yes: 41, no: 7, abstain: 0
   },
   {
     num: 4,
-    title: "Literature for Incarcerated on Tablets — Research Project Plan",
-    text: "To direct the World Board to create a project plan for consideration at WSC 2029 to research and explore the opportunities and obstacles of providing book-length pieces of literature to the incarcerated, on tablets, in addition to the IPs and audio version of the Fifth Edition Basic Text that already exist on inmate tablets.",
-    maker: "Maker: Arizona Region | Co-makers: Florida, Ohio, Northern California, Southern California, Sweden, UK, Utah",
-    yes: 35, no: 14, abstain: 0
+    id: 'motion-4',
+    title: 'Literature for Incarcerated on Tablets — Research Plan',
+    text: 'To direct the World Board to create a project plan for consideration at WSC 2029 to research and explore the opportunities and obstacles of providing book-length pieces of literature to the incarcerated, on tablets, in addition to the IPs and audio version of the Fifth Edition Basic Text that already exist on inmate tablets.',
+    maker: 'Maker: Arizona Region | Co-makers: Florida, Ohio, Northern California, Southern California, Sweden, UK, Utah',
+    yes: 35, no: 13, abstain: 0
   },
   {
     num: 5,
-    title: "AI Interpretation for WSC Meetings",
-    text: "To direct the World Board to implement artificial intelligence (AI) interpretation solutions for WSC meetings (both in-person and virtual) to replace the current human live language interpretation.",
-    maker: "Maker: South Florida Region | Co-makers: Iran, UK, Nepal",
-    yes: 17, no: 28, abstain: 4
+    id: 'motion-5',
+    title: 'AI Interpretation for WSC Meetings',
+    text: 'To direct the World Board to implement artificial intelligence (AI) interpretation solutions for WSC meetings (both in-person and virtual) to replace the current human live language interpretation.',
+    maker: 'Maker: South Florida Region | Co-makers: Iran, UK, Nepal',
+    yes: 17, no: 27, abstain: 4
   }
 ];
 
-// Per-area data: motions array index 0=M1 … 4=M5
-const areaData = [
-  { name: "Borderline Area",             groups: 4,
-    motions: [{yes:4,no:0,ab:0},{yes:4,no:0,ab:0},{yes:4,no:0,ab:0},{yes:2,no:2,ab:0},{yes:1,no:3,ab:0}] },
-  { name: "Catawba Valley Area",         groups: 5,
-    motions: [{yes:5,no:0,ab:0},{yes:4,no:0,ab:1},{yes:5,no:0,ab:0},{yes:4,no:1,ab:0},{yes:1,no:4,ab:0}] },
-  { name: "Central Carolina Area",       groups: 5,
-    motions: [{yes:3,no:2,ab:0},{yes:2,no:3,ab:0},{yes:3,no:2,ab:0},{yes:4,no:1,ab:0},{yes:3,no:2,ab:0}] },
-  { name: "Central Piedmont Area",       groups: 1,
-    motions: [{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0}] },
-  { name: "Coastal Carolina Area",       groups: 1,
-    motions: [{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:0,no:1,ab:0}] },
-  { name: "Gap Area",                    groups: 2,
-    motions: [{yes:2,no:0,ab:0},{yes:2,no:0,ab:0},{yes:2,no:0,ab:0},{yes:2,no:0,ab:0},{yes:1,no:0,ab:1}] },
-  { name: "Greater Charlotte Area",      groups: 8,
-    motions: [{yes:7,no:0,ab:1},{yes:6,no:0,ab:2},{yes:5,no:3,ab:0},{yes:5,no:3,ab:0},{yes:2,no:4,ab:2}] },
-  { name: "Greater Columbia Area",       groups: 6,
-    motions: [{yes:6,no:0,ab:0},{yes:6,no:0,ab:0},{yes:5,no:1,ab:0},{yes:4,no:2,ab:0},{yes:4,no:2,ab:0}] },
-  { name: "Lake Norman Area",            groups: 4,
-    motions: [{yes:4,no:0,ab:0},{yes:4,no:0,ab:0},{yes:4,no:0,ab:0},{yes:1,no:3,ab:0},{yes:0,no:4,ab:0}] },
-  { name: "Port City Area",              groups: 2,
-    motions: [{yes:2,no:0,ab:0},{yes:1,no:1,ab:0},{yes:2,no:0,ab:0},{yes:1,no:1,ab:0},{yes:0,no:2,ab:0}] },
-  { name: "Sun City Area",               groups: 7,
-    motions: [{yes:7,no:0,ab:0},{yes:6,no:1,ab:0},{yes:7,no:0,ab:0},{yes:7,no:0,ab:0},{yes:3,no:3,ab:1}] },
-  { name: "Twin City Area",              groups: 3,
-    motions: [{yes:3,no:0,ab:0},{yes:3,no:0,ab:0},{yes:2,no:1,ab:0},{yes:2,no:1,ab:0},{yes:1,no:2,ab:0}] },
-  { name: "Western North Carolina Area", groups: 1,
-    motions: [{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:0,no:1,ab:0}] },
+// motions array: index 0 = Motion 1 … 4 = Motion 5 → { y, n, ab }
+const AREAS = [
+  { name:'Borderline Area',             g:4,  m:[{y:4,n:0,a:0},{y:4,n:0,a:0},{y:4,n:0,a:0},{y:2,n:2,a:0},{y:1,n:3,a:0}] },
+  { name:'Catawba Valley Area',         g:5,  m:[{y:5,n:0,a:0},{y:4,n:0,a:1},{y:5,n:0,a:0},{y:4,n:1,a:0},{y:1,n:4,a:0}] },
+  { name:'Central Carolina Area',       g:5,  m:[{y:3,n:2,a:0},{y:2,n:3,a:0},{y:3,n:2,a:0},{y:4,n:1,a:0},{y:3,n:2,a:0}] },
+  { name:'Central Piedmont Area',       g:1,  m:[{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0}] },
+  { name:'Coastal Carolina Area',       g:1,  m:[{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:0,n:1,a:0}] },
+  { name:'Gap Area',                    g:2,  m:[{y:2,n:0,a:0},{y:2,n:0,a:0},{y:2,n:0,a:0},{y:2,n:0,a:0},{y:1,n:0,a:1}] },
+  { name:'Greater Charlotte Area',      g:8,  m:[{y:7,n:0,a:1},{y:6,n:0,a:2},{y:5,n:3,a:0},{y:5,n:3,a:0},{y:2,n:4,a:2}] },
+  { name:'Greater Columbia Area',       g:5,  m:[{y:5,n:0,a:0},{y:5,n:0,a:0},{y:4,n:1,a:0},{y:4,n:1,a:0},{y:4,n:1,a:0}] },
+  { name:'Lake Norman Area',            g:4,  m:[{y:4,n:0,a:0},{y:4,n:0,a:0},{y:4,n:0,a:0},{y:1,n:3,a:0},{y:0,n:4,a:0}] },
+  { name:'Port City Area',              g:2,  m:[{y:2,n:0,a:0},{y:1,n:1,a:0},{y:2,n:0,a:0},{y:1,n:1,a:0},{y:0,n:2,a:0}] },
+  { name:'Sun City Area',               g:7,  m:[{y:7,n:0,a:0},{y:6,n:1,a:0},{y:7,n:0,a:0},{y:7,n:0,a:0},{y:3,n:3,a:1}] },
+  { name:'Twin City Area',              g:3,  m:[{y:3,n:0,a:0},{y:3,n:0,a:0},{y:2,n:1,a:0},{y:2,n:1,a:0},{y:1,n:2,a:0}] },
+  { name:'Western North Carolina Area', g:1,  m:[{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:0,n:1,a:0}] },
 ];
 
-// ─────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────
-function yesPercent(yes, no) {
-  const total = yes + no;
-  if (total === 0) return 0;
-  return (yes / total) * 100;
+/* ─────────────────────────────────────────────────────
+   HELPERS
+───────────────────────────────────────────────────── */
+function yesPct(yes, no, abstain = 0) {
+  const t = yes + no + abstain;
+  return t === 0 ? 0 : (yes / t) * 100;
 }
 
-function verdictFromPct(pct) {
-  return pct >= 80 ? 'yes' : 'no';
+function dotClass(am) {
+  const tot = am.y + am.n;
+  if (tot === 0) return 'abs-d';
+  const pct = am.y / tot;
+  if (pct >= 0.6) return 'yes-d';
+  if (pct <= 0.4) return 'no-d';
+  return 'mix-d';
 }
 
-function areaBadge(m) {
-  const total = m.yes + m.no;
-  if (total === 0) return '<span class="vbadge abs">0 votes</span>';
-  const pct = (m.yes / total) * 100;
-  if (m.yes === total) return `<span class="vbadge yes">${m.yes}Y</span>`;
-  if (m.no === total)  return `<span class="vbadge no">${m.no}N</span>`;
-  const abStr = m.ab > 0 ? ` +${m.ab}A` : '';
-  const cls = pct >= 80 ? 'yes' : pct >= 50 ? 'mix' : 'no';
-  return `<span class="vbadge ${cls}">${m.yes}Y / ${m.no}N${abStr}</span>`;
+function pillLabel(am) {
+  const tot = am.y + am.n;
+  if (tot === 0 && am.a > 0) return `<span class="pill abs-p">${am.a}A</span>`;
+  if (tot === 0) return '—';
+  const abStr = am.a > 0 ? ` +${am.a}A` : '';
+  const pct = am.y / tot;
+  let cls = pct >= 0.6 ? 'yes-p' : pct <= 0.4 ? 'no-p' : 'mix-p';
+  return `<span class="pill ${cls}">${am.y}Y / ${am.n}N${abStr}</span>`;
 }
 
-// ─────────────────────────────────────────────
-// AREA TABLE
-// ─────────────────────────────────────────────
-const tbody = document.getElementById('area-tbody');
-areaData.forEach(area => {
-  const tr = document.createElement('tr');
-  let cells = `<td>${area.name}</td><td style="text-align:center;font-weight:700;">${area.groups}</td>`;
-  area.motions.forEach(m => { cells += `<td>${areaBadge(m)}</td>`; });
-  tr.innerHTML = cells;
-  tbody.appendChild(tr);
+const CHART_THEME = {
+  yes: '#1FD07A', no: '#FF4554', abs: '#4A6A88',
+  grid: 'rgba(30,48,80,0.6)', text: '#5A7A99'
+};
+
+/* ─────────────────────────────────────────────────────
+   AREA GRID
+───────────────────────────────────────────────────── */
+const areaGrid = document.getElementById('area-grid');
+AREAS.forEach(area => {
+  const card = document.createElement('div');
+  card.className = 'area-card';
+  const dots = area.m.map((am, i) =>
+    `<span class="m-dot ${dotClass(am)}" title="Motion ${i+1}: ${am.y}Y/${am.n}N${am.a?'/'+am.a+'A':''}">M${i+1}</span>`
+  ).join('');
+  card.innerHTML = `
+    <div class="area-name">${area.name}</div>
+    <div class="area-groups">${area.g} group${area.g!==1?'s':''} responding</div>
+    <div class="motion-dots">${dots}</div>
+  `;
+  areaGrid.appendChild(card);
 });
 
-// ─────────────────────────────────────────────
-// MOTIONS
-// ─────────────────────────────────────────────
-const PIE_COLORS  = { yes:'#22c55e', no:'#ef4444', abstain:'#94a3b8' };
-const BAR_COLORS  = { yes:'rgba(34,197,94,0.85)', no:'rgba(239,68,68,0.85)' };
+/* ─────────────────────────────────────────────────────
+   MOTION CARDS
+───────────────────────────────────────────────────── */
+const motionContainer = document.getElementById('motions-container');
 
-const container = document.getElementById('motions-container');
-
-motions.forEach((m, idx) => {
-  const pct  = yesPercent(m.yes, m.no);
-  const v    = verdictFromPct(pct);
+MOTIONS.forEach(m => {
+  const pct   = yesPct(m.yes, m.no, m.abstain);
+  const isYes = pct >= 80;
   const total = m.yes + m.no + m.abstain;
+  const numStr = String(m.num).padStart(2, '0');
 
-  const card = document.createElement('div');
-  card.className = 'motion-card';
-
-  // verdict icon + text
-  const verdictHTML = v === 'yes'
-    ? `<div class="verdict yes-v"><span class="icon">&#10003;</span> Carolina Region is LIKELY VOTING YES (${pct.toFixed(1)}% in favor)</div>`
-    : `<div class="verdict no-v"><span class="icon">&#10007;</span> Carolina Region is LIKELY VOTING NO (${pct.toFixed(1)}% in favor)</div>`;
-
-  // per-area breakdown rows for this motion
-  const areaRows = areaData.map(area => {
-    const am = area.motions[idx];
+  // per-area table rows
+  const areaRows = AREAS.map(area => {
+    const am = area.m[m.num - 1];
     return `<tr>
       <td>${area.name}</td>
-      <td style="text-align:center;">${area.groups}</td>
-      <td style="text-align:center;color:#16a34a;font-weight:700;">${am.yes}</td>
-      <td style="text-align:center;color:#dc2626;font-weight:700;">${am.no}</td>
-      <td style="text-align:center;color:#94a3b8;font-weight:700;">${am.ab}</td>
-      <td style="text-align:center;">${areaBadge(am)}</td>
+      <td style="text-align:center;font-family:'DM Mono',monospace;">${area.g}</td>
+      <td style="text-align:center;color:var(--yes);font-family:'DM Mono',monospace;">${am.y}</td>
+      <td style="text-align:center;color:var(--no);font-family:'DM Mono',monospace;">${am.n}</td>
+      <td style="text-align:center;color:var(--abs);font-family:'DM Mono',monospace;">${am.a}</td>
+      <td>${pillLabel(am)}</td>
     </tr>`;
   }).join('');
 
-  card.innerHTML = `
-    <div class="motion-header">
-      <span class="motion-num">Motion ${m.num}</span>
-      <span class="motion-title">${m.title}</span>
-    </div>
-    <div class="motion-body">${m.text}</div>
-    <div class="motion-maker">${m.maker}</div>
+  const section = document.createElement('div');
+  section.className = 'motion-section';
+  section.id = m.id;
 
-    ${verdictHTML}
+  section.innerHTML = `
+    <div class="motion-card">
+      <div class="motion-bg-num">${numStr}</div>
+      <div class="motion-card-inner">
+        <div class="motion-eyebrow">Motion ${m.num} of 5</div>
+        <h3 class="motion-title">${m.title}</h3>
+        <div class="motion-maker">${m.maker}</div>
+        <div class="motion-text">${m.text}</div>
 
-    <div class="vote-stats">
-      <div class="vs-item yes-c"><div class="vs-num">${m.yes}</div><div class="vs-lbl">Yes</div></div>
-      <div class="vs-sep">/</div>
-      <div class="vs-item no-c"><div class="vs-num">${m.no}</div><div class="vs-lbl">No</div></div>
-      <div class="vs-sep">/</div>
-      <div class="vs-item abs-c"><div class="vs-num">${m.abstain}</div><div class="vs-lbl">Abstain*</div></div>
-      <div class="vs-sep" style="margin: 0 .5rem;"></div>
-      <div class="pct-bar-wrap">
-        <div class="pct-lbl">Yes (excl. abstain) &mdash; ${pct.toFixed(1)}% &bull; ${total} total responses</div>
-        <div class="pct-bar"><div class="pct-fill yes-f" style="width:${pct.toFixed(1)}%"></div></div>
-      </div>
-    </div>
+        <div class="verdict-banner ${isYes ? 'yes-banner' : 'no-banner'}">
+          <div class="verdict-icon">${isYes ? '✓' : '✗'}</div>
+          <div>
+            <div class="verdict-label">Carolina Region is Likely Voting ${isYes ? 'YES' : 'NO'}</div>
+            <div class="verdict-detail">Based on ${total} total votes &bull; Abstentions count as non-supporting (included in denominator)</div>
+          </div>
+          <div class="verdict-pct">${pct.toFixed(1)}%</div>
+        </div>
 
-    <div class="charts-row">
-      <div class="chart-box">
-        <h4>Vote Distribution (Pie)</h4>
-        <div class="chart-canvas-wrap">
-          <canvas id="pie-${m.num}"></canvas>
+        <div class="vote-row">
+          <div class="vote-count vc-yes">
+            <span class="vc-num">${m.yes}</span>
+            <span class="vc-lbl">Yes</span>
+          </div>
+          <div class="vote-sep">/</div>
+          <div class="vote-count vc-no">
+            <span class="vc-num">${m.no}</span>
+            <span class="vc-lbl">No</span>
+          </div>
+          <div class="vote-sep">/</div>
+          <div class="vote-count vc-abs">
+            <span class="vc-num">${m.abstain}</span>
+            <span class="vc-lbl">Abstain *</span>
+          </div>
+          <div class="vote-sep" style="color:transparent;">|</div>
+          <div class="pct-stack">
+            <div class="pct-row-label">Yes — ${pct.toFixed(1)}% of ${total} total votes (abstentions count as non-supporting)</div>
+            <div class="pct-track">
+              <div class="pct-fill ${isYes ? '' : 'no-fill'}" data-width="${pct.toFixed(1)}"></div>
+            </div>
+            <div class="pct-val">${pct.toFixed(1)}% in favor (excl. abstain)</div>
+          </div>
+        </div>
+
+        <div class="charts-row">
+          <div class="chart-panel">
+            <h4>Vote Distribution</h4>
+            <div class="chart-wrap">
+              <canvas id="pie-${m.num}"></canvas>
+            </div>
+          </div>
+          <div class="chart-panel">
+            <h4>Yes vs No — Active Votes Only</h4>
+            <div class="chart-wrap">
+              <canvas id="bar-${m.num}"></canvas>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="chart-box">
-        <h4>Yes vs No (Excl. Abstain)</h4>
-        <div class="chart-canvas-wrap">
-          <canvas id="bar-${m.num}"></canvas>
-        </div>
-      </div>
-    </div>
 
-    <details class="area-breakdown">
-      <summary>&#9660; Show per-area breakdown for Motion ${m.num}</summary>
-      <div class="area-tbl-wrap">
-        <table class="area-tbl">
-          <thead><tr>
-            <th>Area</th><th>Groups</th>
-            <th style="color:#16a34a;">Yes</th>
-            <th style="color:#dc2626;">No</th>
-            <th>Abstain</th>
-            <th>Summary</th>
-          </tr></thead>
-          <tbody>${areaRows}</tbody>
-        </table>
-      </div>
-    </details>
+      <details class="breakdown">
+        <summary>Per-Area Breakdown — Motion ${m.num}</summary>
+        <div class="bd-table-wrap">
+          <table class="bd-table">
+            <thead><tr>
+              <th>Area</th>
+              <th style="text-align:center">Groups</th>
+              <th style="text-align:center;color:var(--yes)">Yes</th>
+              <th style="text-align:center;color:var(--no)">No</th>
+              <th style="text-align:center;color:var(--abs)">Abstain</th>
+              <th>Result</th>
+            </tr></thead>
+            <tbody>${areaRows}</tbody>
+          </table>
+        </div>
+      </details>
+    </div>
   `;
 
-  container.appendChild(card);
+  motionContainer.appendChild(section);
 
-  // ── PIE CHART ──
-  const pieLabels = m.abstain > 0 ? ['Yes','No','Abstain'] : ['Yes','No'];
-  const pieData   = m.abstain > 0 ? [m.yes, m.no, m.abstain] : [m.yes, m.no];
-  const pieColors = m.abstain > 0
-    ? [PIE_COLORS.yes, PIE_COLORS.no, PIE_COLORS.abstain]
-    : [PIE_COLORS.yes, PIE_COLORS.no];
+  /* ── PIE CHART ── */
+  const pieLabels = ['Yes', 'No'];
+  const pieData   = [m.yes, m.no];
+  const pieColors = [CHART_THEME.yes, CHART_THEME.no];
+  if (m.abstain > 0) { pieLabels.push('Abstain'); pieData.push(m.abstain); pieColors.push(CHART_THEME.abs); }
 
   new Chart(document.getElementById(`pie-${m.num}`), {
-    type: 'pie',
+    type: 'doughnut',
     data: {
       labels: pieLabels,
-      datasets: [{ data: pieData, backgroundColor: pieColors, borderWidth: 2, borderColor: '#fff' }]
+      datasets: [{ data: pieData, backgroundColor: pieColors, borderWidth: 2, borderColor: '#0D1520', hoverBorderColor: '#1E3050' }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
+      cutout: '62%',
       plugins: {
-        legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 12 } },
+        legend: {
+          position: 'bottom',
+          labels: { color: CHART_THEME.text, font: { family: 'DM Mono', size: 11 }, padding: 14, boxWidth: 12, boxHeight: 12 }
+        },
         tooltip: {
+          backgroundColor: '#0D1520', borderColor: '#1E3050', borderWidth: 1,
+          titleColor: '#D8E8F5', bodyColor: '#5A7A99',
           callbacks: {
             label: ctx => {
-              const val = ctx.parsed;
-              const ttl = pieData.reduce((a,b)=>a+b,0);
-              return ` ${ctx.label}: ${val} (${(val/ttl*100).toFixed(1)}%)`;
+              const tot = pieData.reduce((a,b)=>a+b,0);
+              return `  ${ctx.label}: ${ctx.parsed} (${(ctx.parsed/tot*100).toFixed(1)}%)`;
             }
           }
         }
@@ -467,19 +809,18 @@ motions.forEach((m, idx) => {
     }
   });
 
-  // ── BAR CHART ──
-  const yesPct = pct;
-  const noPct  = 100 - pct;
+  /* ── BAR CHART ── */
   new Chart(document.getElementById(`bar-${m.num}`), {
     type: 'bar',
     data: {
       labels: ['Yes', 'No'],
       datasets: [{
-        label: 'Votes (excl. abstain)',
         data: [m.yes, m.no],
-        backgroundColor: [BAR_COLORS.yes, BAR_COLORS.no],
+        backgroundColor: [CHART_THEME.yes + 'CC', CHART_THEME.no + 'CC'],
+        hoverBackgroundColor: [CHART_THEME.yes, CHART_THEME.no],
         borderRadius: 6,
-        borderSkipped: false
+        borderSkipped: false,
+        borderWidth: 0
       }]
     },
     options: {
@@ -487,11 +828,12 @@ motions.forEach((m, idx) => {
       plugins: {
         legend: { display: false },
         tooltip: {
+          backgroundColor: '#0D1520', borderColor: '#1E3050', borderWidth: 1,
+          titleColor: '#D8E8F5', bodyColor: '#5A7A99',
           callbacks: {
             label: ctx => {
-              const val = ctx.parsed.y;
-              const totActive = m.yes + m.no;
-              return ` ${val} votes (${(val/totActive*100).toFixed(1)}%)`;
+              const active = m.yes + m.no;
+              return `  ${ctx.parsed.y} votes (${(ctx.parsed.y/active*100).toFixed(1)}% of active)`;
             }
           }
         }
@@ -499,21 +841,59 @@ motions.forEach((m, idx) => {
       scales: {
         y: {
           beginAtZero: true,
-          max: Math.ceil(Math.max(m.yes, m.no) * 1.2),
-          ticks: { stepSize: 5 },
-          grid: { color: '#e2e8f0' }
+          max: Math.ceil(Math.max(m.yes, m.no) * 1.25),
+          grid: { color: CHART_THEME.grid },
+          ticks: { color: CHART_THEME.text, font: { family: 'DM Mono', size: 10 }, stepSize: 10 },
+          border: { color: 'transparent' }
         },
-        x: { grid: { display: false } }
+        x: {
+          grid: { display: false },
+          ticks: { color: CHART_THEME.text, font: { family: 'DM Mono', size: 11 } },
+          border: { color: 'transparent' }
+        }
       }
     }
   });
-
 });
 
-// ─────────────────────────────────────────────
-// AREA PARTICIPATION CHART (overview bar)
-// ─────────────────────────────────────────────
-</script>
+/* ─────────────────────────────────────────────────────
+   COUNTER ANIMATION (header stats)
+───────────────────────────────────────────────────── */
+function animateCount(el, target, delay = 0) {
+  const duration = 1400;
+  setTimeout(() => {
+    const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - start) / duration, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(e * target);
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(tick);
+  }, delay);
+}
 
+document.querySelectorAll('[data-count]').forEach((el, i) => {
+  animateCount(el, +el.dataset.count, 600 + i * 80);
+});
+
+/* ─────────────────────────────────────────────────────
+   SCROLL ANIMATIONS
+───────────────────────────────────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('visible');
+    // animate progress bars within
+    entry.target.querySelectorAll('.pct-fill').forEach(fill => {
+      fill.style.width = fill.dataset.width + '%';
+    });
+    observer.unobserve(entry.target);
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.motion-section').forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
