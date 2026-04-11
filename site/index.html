@@ -439,6 +439,111 @@
     }
     .note-box strong { color: var(--gold); }
 
+    /* ── REGION FACTS ───────────────────────────── */
+    #region-facts { margin-bottom: 4rem; }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 680px) { .facts-grid { grid-template-columns: 1fr; } }
+
+    .meeting-panel, .info-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .panel-head {
+      padding: 1rem 1.25rem .75rem;
+      border-bottom: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .panel-body { padding: 1.25rem; }
+
+    /* meeting stat tiles */
+    .meeting-tiles {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: .75rem; margin-bottom: 1.25rem;
+    }
+    @media (max-width: 900px) { .meeting-tiles { grid-template-columns: repeat(2, 1fr); } }
+    .mtile {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .9rem .75rem;
+      text-align: center;
+    }
+    .mtile-type {
+      font-family: 'DM Mono', monospace;
+      font-size: .58rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: .5rem;
+    }
+    .mtile-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.9rem; font-weight: 500;
+      line-height: 1; color: var(--gold);
+      display: block;
+    }
+    .mtile-num.total-num { color: var(--text); }
+    .mtile-delta {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; margin-top: .35rem;
+      font-weight: 500;
+    }
+    .delta-up   { color: var(--yes); }
+    .delta-down { color: var(--no); }
+    .delta-neut { color: var(--text-muted); }
+
+    .mtile-from {
+      font-size: .6rem; color: var(--text-faint);
+      margin-top: .1rem;
+    }
+
+    /* meeting chart */
+    .meeting-chart-wrap { position: relative; height: 180px; }
+
+    /* info panel items */
+    .info-list { display: flex; flex-direction: column; gap: .6rem; }
+    .info-item {
+      display: flex; align-items: flex-start; gap: .9rem;
+      padding: .75rem .9rem;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .info-icon {
+      flex-shrink: 0; width: 32px; height: 32px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .95rem;
+      background: rgba(232,160,32,0.12);
+      border: 1px solid var(--gold-dim);
+    }
+    .info-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .6rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: .15rem;
+    }
+    .info-value {
+      font-size: .88rem; font-weight: 600; color: var(--text);
+      line-height: 1.3;
+    }
+    .info-sub {
+      font-size: .73rem; color: var(--text-muted);
+      margin-top: .1rem;
+    }
+    .info-sub a {
+      color: var(--gold); text-decoration: none;
+    }
+    .info-sub a:hover { text-decoration: underline; }
+
     /* ── FOOTER ─────────────────────────────────── */
     footer {
       text-align: center;
@@ -518,6 +623,100 @@
 
 <!-- ── MAIN ───────────────────────────────────────── -->
 <main>
+
+  <!-- REGION FACTS -->
+  <section id="region-facts">
+    <div class="section-label">Region at a Glance</div>
+
+    <div class="facts-grid">
+
+      <!-- MEETING GROWTH -->
+      <div class="meeting-panel">
+        <div class="panel-head">Weekly Meeting Growth &mdash; 2023 vs 2026</div>
+        <div class="panel-body">
+          <div class="meeting-tiles">
+            <div class="mtile">
+              <div class="mtile-type">In-Person</div>
+              <span class="mtile-num" data-count="648">0</span>
+              <div class="mtile-delta delta-up">&#9650; +78</div>
+              <div class="mtile-from">from 570 in 2023</div>
+            </div>
+            <div class="mtile">
+              <div class="mtile-type">Hybrid</div>
+              <span class="mtile-num" data-count="28">0</span>
+              <div class="mtile-delta delta-down">&#9660; &minus;11</div>
+              <div class="mtile-from">from 39 in 2023</div>
+            </div>
+            <div class="mtile">
+              <div class="mtile-type">Virtual</div>
+              <span class="mtile-num" data-count="53">0</span>
+              <div class="mtile-delta delta-down">&#9660; &minus;17</div>
+              <div class="mtile-from">from 70 in 2023</div>
+            </div>
+            <div class="mtile">
+              <div class="mtile-type">Total</div>
+              <span class="mtile-num total-num" data-count="729">0</span>
+              <div class="mtile-delta delta-up">&#9650; +50</div>
+              <div class="mtile-from">from 679 in 2023</div>
+            </div>
+          </div>
+          <div class="meeting-chart-wrap">
+            <canvas id="meeting-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- REGIONAL INFO -->
+      <div class="info-panel">
+        <div class="panel-head">Regional Information</div>
+        <div class="panel-body">
+          <div class="info-list">
+            <div class="info-item">
+              <div class="info-icon">&#128101;</div>
+              <div>
+                <div class="info-label">Regional Delegate</div>
+                <div class="info-value">Patrick J.</div>
+                <div class="info-sub"><a href="mailto:rd@crna.org">rd@crna.org</a></div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">&#128101;</div>
+              <div>
+                <div class="info-label">Alternate Delegate</div>
+                <div class="info-value">Jody T.</div>
+                <div class="info-sub"><a href="mailto:ad@crna.org">ad@crna.org</a></div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">&#127968;</div>
+              <div>
+                <div class="info-label">Areas in Region</div>
+                <div class="info-value">19 Total Areas</div>
+                <div class="info-sub">13 participating in this CAR cycle</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">&#128197;</div>
+              <div>
+                <div class="info-label">Regional Service Meetings</div>
+                <div class="info-value">4 Hybrid Meetings per Year</div>
+                <div class="info-sub">In-person &amp; online attendance</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">&#9878;</div>
+              <div>
+                <div class="info-label">Decision Making Process</div>
+                <div class="info-value">CBDM</div>
+                <div class="info-sub">Consensus-Based Decision Making</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <!-- AREA PARTICIPATION -->
   <section id="participation">
@@ -648,6 +847,58 @@ const CHART_THEME = {
   yes: '#1FD07A', no: '#FF4554', abs: '#4A6A88',
   grid: 'rgba(30,48,80,0.6)', text: '#5A7A99'
 };
+
+/* ─────────────────────────────────────────────────────
+   MEETING GROWTH CHART
+───────────────────────────────────────────────────── */
+new Chart(document.getElementById('meeting-chart'), {
+  type: 'bar',
+  data: {
+    labels: ['In-Person', 'Hybrid', 'Virtual', 'Total'],
+    datasets: [
+      {
+        label: '2023',
+        data: [570, 39, 70, 679],
+        backgroundColor: 'rgba(74,106,136,0.5)',
+        hoverBackgroundColor: 'rgba(74,106,136,0.8)',
+        borderRadius: 5, borderSkipped: false
+      },
+      {
+        label: '2026',
+        data: [648, 28, 53, 729],
+        backgroundColor: 'rgba(232,160,32,0.75)',
+        hoverBackgroundColor: 'rgba(232,160,32,1)',
+        borderRadius: 5, borderSkipped: false
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: { color: CHART_THEME.text, font: { family: 'DM Mono', size: 10 }, padding: 12, boxWidth: 10, boxHeight: 10 }
+      },
+      tooltip: {
+        backgroundColor: '#0D1520', borderColor: '#1E3050', borderWidth: 1,
+        titleColor: '#EBF3FF', bodyColor: '#8AAEC8'
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: false, min: 0,
+        grid: { color: CHART_THEME.grid },
+        ticks: { color: CHART_THEME.text, font: { family: 'DM Mono', size: 9 } },
+        border: { color: 'transparent' }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: CHART_THEME.text, font: { family: 'DM Mono', size: 9 } },
+        border: { color: 'transparent' }
+      }
+    }
+  }
+});
 
 /* ─────────────────────────────────────────────────────
    AREA GRID
@@ -877,6 +1128,19 @@ function animateCount(el, target, delay = 0) {
 document.querySelectorAll('[data-count]').forEach((el, i) => {
   animateCount(el, +el.dataset.count, 600 + i * 80);
 });
+
+// Meeting tile counters — trigger when section scrolls into view
+const meetingObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.querySelectorAll('.mtile .mtile-num[data-count]').forEach((el, i) => {
+      animateCount(el, +el.dataset.count, i * 120);
+    });
+    meetingObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.2 });
+const factsSection = document.getElementById('region-facts');
+if (factsSection) meetingObserver.observe(factsSection);
 
 /* ─────────────────────────────────────────────────────
    SCROLL ANIMATIONS
