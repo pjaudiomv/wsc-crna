@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carolina Region — WSC 2026 Group CAR Voting Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --blue-dark:  #1a3a5c;
+      --blue-mid:   #2563a8;
+      --blue-light: #3b82d4;
+      --green:      #16a34a;
+      --red:        #dc2626;
+      --yellow:     #ca8a04;
+      --gray-bg:    #f3f6fa;
+      --gray-card:  #ffffff;
+      --gray-border:#d1dae6;
+      --text:       #1e2a38;
+      --text-muted: #5a6a7e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--gray-bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 100%);
+      color: #fff;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .9rem;
+      margin-bottom: .9rem;
+    }
+    header h1 { font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; }
+    header h2 { font-size: clamp(1rem, 2.5vw, 1.3rem); font-weight: 400; opacity: .85; margin-top: .4rem; }
+    header .subtitle { font-size: .88rem; opacity: .7; margin-top: .6rem; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+    /* ── SECTION TITLES ── */
+    .section-title {
+      font-size: 1.35rem; font-weight: 700; color: var(--blue-dark);
+      border-left: 4px solid var(--blue-mid);
+      padding-left: .75rem; margin: 2.5rem 0 1.25rem;
+    }
+
+    /* ── SUMMARY CARDS ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .stat-card {
+      background: var(--gray-card);
+      border: 1px solid var(--gray-border);
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .stat-card .num { font-size: 2.2rem; font-weight: 800; color: var(--blue-mid); line-height: 1; }
+    .stat-card .lbl { font-size: .8rem; color: var(--text-muted); margin-top: .4rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+
+    /* ── PARTICIPATION TABLE ── */
+    .table-wrap { overflow-x: auto; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+    table { width: 100%; border-collapse: collapse; background: var(--gray-card); font-size: .88rem; }
+    thead { background: var(--blue-dark); color: #fff; }
+    thead th { padding: .75rem 1rem; text-align: left; font-weight: 600; letter-spacing: .04em; font-size: .8rem; text-transform: uppercase; white-space: nowrap; }
+    tbody tr { border-bottom: 1px solid var(--gray-border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #eef4fb; }
+    tbody td { padding: .65rem 1rem; vertical-align: middle; }
+    tbody td:first-child { font-weight: 600; }
+
+    /* vote badge in table */
+    .vbadge { display: inline-flex; align-items: center; gap: .35rem; font-size: .78rem; font-weight: 700; padding: .18rem .55rem; border-radius: 999px; white-space: nowrap; }
+    .vbadge.yes  { background: #dcfce7; color: #15803d; }
+    .vbadge.no   { background: #fee2e2; color: #b91c1c; }
+    .vbadge.mix  { background: #fef9c3; color: #92400e; }
+    .vbadge.abs  { background: #f1f5f9; color: #64748b; }
+
+    /* ── DISCLAIMER BOX ── */
+    .note-box {
+      background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px;
+      padding: .9rem 1.1rem; font-size: .84rem; color: #78350f;
+      margin-bottom: 1.5rem;
+    }
+    .note-box strong { color: #92400e; }
+
+    /* ── MOTION CARDS ── */
+    .motion-card {
+      background: var(--gray-card);
+      border: 1px solid var(--gray-border);
+      border-radius: 14px;
+      padding: 1.75rem 1.75rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    }
+    .motion-header {
+      display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .motion-num {
+      flex-shrink: 0;
+      background: var(--blue-dark); color: #fff;
+      border-radius: 8px; padding: .35rem .75rem;
+      font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    }
+    .motion-title { font-size: 1.02rem; font-weight: 700; color: var(--blue-dark); flex: 1; }
+    .motion-body { font-size: .92rem; color: var(--text); background: #f8fafc; border-left: 3px solid var(--blue-light); border-radius: 0 6px 6px 0; padding: .85rem 1rem; margin-bottom: 1rem; line-height: 1.65; }
+    .motion-maker { font-size: .81rem; color: var(--text-muted); font-style: italic; margin-bottom: 1.25rem; }
+
+    /* verdict banner */
+    .verdict {
+      display: inline-flex; align-items: center; gap: .55rem;
+      font-size: 1.05rem; font-weight: 800; border-radius: 8px;
+      padding: .55rem 1.1rem; margin-bottom: 1.5rem;
+      letter-spacing: .03em;
+    }
+    .verdict.yes-v { background: #dcfce7; color: #15803d; border: 2px solid #86efac; }
+    .verdict.no-v  { background: #fee2e2; color: #b91c1c; border: 2px solid #fca5a5; }
+    .verdict .icon { font-size: 1.3rem; }
+
+    /* stats row */
+    .vote-stats { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; }
+    .vs-item { text-align: center; }
+    .vs-item .vs-num { font-size: 1.5rem; font-weight: 800; line-height: 1; }
+    .vs-item .vs-lbl { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    .vs-item.yes-c .vs-num { color: #16a34a; }
+    .vs-item.no-c  .vs-num { color: #dc2626; }
+    .vs-item.abs-c .vs-num { color: #94a3b8; }
+    .vs-sep { color: var(--gray-border); font-size: 1.5rem; }
+    .pct-bar-wrap { flex: 1; min-width: 180px; }
+    .pct-lbl { font-size: .75rem; color: var(--text-muted); margin-bottom: .3rem; }
+    .pct-bar { height: 10px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
+    .pct-fill { height: 100%; border-radius: 999px; transition: width .6s; }
+    .pct-fill.yes-f { background: #22c55e; }
+
+    /* charts */
+    .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 600px) { .charts-row { grid-template-columns: 1fr; } }
+    .chart-box { background: #f8fafc; border: 1px solid var(--gray-border); border-radius: 10px; padding: 1rem; }
+    .chart-box h4 { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .75rem; text-align: center; }
+    .chart-canvas-wrap { position: relative; height: 220px; }
+
+    /* area breakdown */
+    .area-breakdown { margin-top: 1.5rem; }
+    .area-breakdown summary { cursor: pointer; font-size: .88rem; font-weight: 700; color: var(--blue-mid); padding: .4rem 0; user-select: none; }
+    .area-breakdown summary:hover { color: var(--blue-dark); }
+    .area-tbl-wrap { overflow-x: auto; margin-top: .75rem; border-radius: 8px; border: 1px solid var(--gray-border); }
+    .area-tbl { width: 100%; border-collapse: collapse; font-size: .82rem; background: #fff; }
+    .area-tbl th { background: #eef4fb; color: var(--blue-dark); font-weight: 700; padding: .5rem .75rem; text-align: left; border-bottom: 1px solid var(--gray-border); }
+    .area-tbl td { padding: .45rem .75rem; border-bottom: 1px solid #f1f5f9; }
+    .area-tbl tr:last-child td { border-bottom: none; }
+    .area-tbl tr:hover td { background: #f8fafc; }
+
+    footer {
+      text-align: center; font-size: .8rem; color: var(--text-muted);
+      padding: 2rem 1rem; border-top: 1px solid var(--gray-border);
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 700px) {
+      .motion-card { padding: 1.25rem 1rem; }
+      .motion-header { flex-direction: column; gap: .5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">WSC 2026 Participation Report</div>
+  <h1>Carolina Region (CAR)</h1>
+  <h2>Group Conscience &amp; Voting Tally</h2>
+  <p class="subtitle">World Service Conference 2026 &mdash; CAR Pre-Conference Assessment Report</p>
+</header>
+
+<div class="container">
+
+  <!-- SUMMARY STATS -->
+  <h2 class="section-title">Participation Summary</h2>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="num">49</div><div class="lbl">Total Responses</div></div>
+    <div class="stat-card"><div class="num">13</div><div class="lbl">Areas Participating</div></div>
+    <div class="stat-card"><div class="num">48</div><div class="lbl">Unique Groups</div></div>
+    <div class="stat-card"><div class="num">5</div><div class="lbl">Motions Voted On</div></div>
+    <div class="stat-card"><div class="num">3</div><div class="lbl">Likely YES</div></div>
+    <div class="stat-card"><div class="num">2</div><div class="lbl">Likely NO</div></div>
+  </div>
+
+  <!-- AREA PARTICIPATION TABLE -->
+  <h2 class="section-title">Area Participation</h2>
+  <div class="note-box">
+    <strong>Note:</strong> Only areas with at least one group response are shown.
+    Abstentions are excluded from all vote percentage calculations &mdash; quorum is determined by Yes + No votes only.
+    A motion is considered <strong>Likely YES</strong> if &ge;80% of non-abstaining votes are in favor.
+    One duplicate submission was identified (Turning Point, Greater Columbia Area) and is reflected in the tally as received.
+  </div>
+  <div class="table-wrap">
+    <table id="area-table">
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Groups</th>
+          <th>Motion 1</th>
+          <th>Motion 2</th>
+          <th>Motion 3</th>
+          <th>Motion 4</th>
+          <th>Motion 5</th>
+        </tr>
+      </thead>
+      <tbody id="area-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- MOTIONS -->
+  <h2 class="section-title">Motion Results</h2>
+  <div id="motions-container"></div>
+
+</div>
+
+<footer>
+  Carolina Region &mdash; WSC 2026 CAR Voting Report &bull; Generated April 2026 &bull; 49 group responses across 13 areas
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+
+const motions = [
+  {
+    num: 1,
+    title: "Revised IP #21 — Staying Clean in Isolation",
+    text: "Approve the revised IP #21, Staying Clean in Isolation, contained in Addendum A, as Fellowship-approved recovery literature to replace the current IP #21, The Loner—Staying Clean in Isolation.",
+    maker: "Maker: World Board",
+    yes: 46, no: 2, abstain: 1
+  },
+  {
+    num: 2,
+    title: "2026–2029 NA World Services Strategic Plan",
+    text: "To adopt the collaboratively created 2026–2029 NA World Services Strategic Plan contained in Addendum B.",
+    maker: "Maker: World Board",
+    yes: 41, no: 5, abstain: 3
+  },
+  {
+    num: 3,
+    title: "WCNA Every 5 Years",
+    text: "To hold the World Convention of Narcotics Anonymous (WCNA) every 5 years, beginning in 2028. The location to be determined by the World Board based on fiscal and geographic considerations that lend themselves to, at minimum, a revenue-neutral event. (The specific changes to the WCNA Guidelines in GWSNA are shown in Addendum C.)",
+    maker: "Maker: World Board",
+    yes: 42, no: 7, abstain: 0
+  },
+  {
+    num: 4,
+    title: "Literature for Incarcerated on Tablets — Research Project Plan",
+    text: "To direct the World Board to create a project plan for consideration at WSC 2029 to research and explore the opportunities and obstacles of providing book-length pieces of literature to the incarcerated, on tablets, in addition to the IPs and audio version of the Fifth Edition Basic Text that already exist on inmate tablets.",
+    maker: "Maker: Arizona Region | Co-makers: Florida, Ohio, Northern California, Southern California, Sweden, UK, Utah",
+    yes: 35, no: 14, abstain: 0
+  },
+  {
+    num: 5,
+    title: "AI Interpretation for WSC Meetings",
+    text: "To direct the World Board to implement artificial intelligence (AI) interpretation solutions for WSC meetings (both in-person and virtual) to replace the current human live language interpretation.",
+    maker: "Maker: South Florida Region | Co-makers: Iran, UK, Nepal",
+    yes: 17, no: 28, abstain: 4
+  }
+];
+
+// Per-area data: motions array index 0=M1 … 4=M5
+const areaData = [
+  { name: "Borderline Area",             groups: 4,
+    motions: [{yes:4,no:0,ab:0},{yes:4,no:0,ab:0},{yes:4,no:0,ab:0},{yes:2,no:2,ab:0},{yes:1,no:3,ab:0}] },
+  { name: "Catawba Valley Area",         groups: 5,
+    motions: [{yes:5,no:0,ab:0},{yes:4,no:0,ab:1},{yes:5,no:0,ab:0},{yes:4,no:1,ab:0},{yes:1,no:4,ab:0}] },
+  { name: "Central Carolina Area",       groups: 5,
+    motions: [{yes:3,no:2,ab:0},{yes:2,no:3,ab:0},{yes:3,no:2,ab:0},{yes:4,no:1,ab:0},{yes:3,no:2,ab:0}] },
+  { name: "Central Piedmont Area",       groups: 1,
+    motions: [{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0}] },
+  { name: "Coastal Carolina Area",       groups: 1,
+    motions: [{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:0,no:1,ab:0}] },
+  { name: "Gap Area",                    groups: 2,
+    motions: [{yes:2,no:0,ab:0},{yes:2,no:0,ab:0},{yes:2,no:0,ab:0},{yes:2,no:0,ab:0},{yes:1,no:0,ab:1}] },
+  { name: "Greater Charlotte Area",      groups: 8,
+    motions: [{yes:7,no:0,ab:1},{yes:6,no:0,ab:2},{yes:5,no:3,ab:0},{yes:5,no:3,ab:0},{yes:2,no:4,ab:2}] },
+  { name: "Greater Columbia Area",       groups: 6,
+    motions: [{yes:6,no:0,ab:0},{yes:6,no:0,ab:0},{yes:5,no:1,ab:0},{yes:4,no:2,ab:0},{yes:4,no:2,ab:0}] },
+  { name: "Lake Norman Area",            groups: 4,
+    motions: [{yes:4,no:0,ab:0},{yes:4,no:0,ab:0},{yes:4,no:0,ab:0},{yes:1,no:3,ab:0},{yes:0,no:4,ab:0}] },
+  { name: "Port City Area",              groups: 2,
+    motions: [{yes:2,no:0,ab:0},{yes:1,no:1,ab:0},{yes:2,no:0,ab:0},{yes:1,no:1,ab:0},{yes:0,no:2,ab:0}] },
+  { name: "Sun City Area",               groups: 7,
+    motions: [{yes:7,no:0,ab:0},{yes:6,no:1,ab:0},{yes:7,no:0,ab:0},{yes:7,no:0,ab:0},{yes:3,no:3,ab:1}] },
+  { name: "Twin City Area",              groups: 3,
+    motions: [{yes:3,no:0,ab:0},{yes:3,no:0,ab:0},{yes:2,no:1,ab:0},{yes:2,no:1,ab:0},{yes:1,no:2,ab:0}] },
+  { name: "Western North Carolina Area", groups: 1,
+    motions: [{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:1,no:0,ab:0},{yes:0,no:1,ab:0}] },
+];
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+function yesPercent(yes, no) {
+  const total = yes + no;
+  if (total === 0) return 0;
+  return (yes / total) * 100;
+}
+
+function verdictFromPct(pct) {
+  return pct >= 80 ? 'yes' : 'no';
+}
+
+function areaBadge(m) {
+  const total = m.yes + m.no;
+  if (total === 0) return '<span class="vbadge abs">0 votes</span>';
+  const pct = (m.yes / total) * 100;
+  if (m.yes === total) return `<span class="vbadge yes">${m.yes}Y</span>`;
+  if (m.no === total)  return `<span class="vbadge no">${m.no}N</span>`;
+  const abStr = m.ab > 0 ? ` +${m.ab}A` : '';
+  const cls = pct >= 80 ? 'yes' : pct >= 50 ? 'mix' : 'no';
+  return `<span class="vbadge ${cls}">${m.yes}Y / ${m.no}N${abStr}</span>`;
+}
+
+// ─────────────────────────────────────────────
+// AREA TABLE
+// ─────────────────────────────────────────────
+const tbody = document.getElementById('area-tbody');
+areaData.forEach(area => {
+  const tr = document.createElement('tr');
+  let cells = `<td>${area.name}</td><td style="text-align:center;font-weight:700;">${area.groups}</td>`;
+  area.motions.forEach(m => { cells += `<td>${areaBadge(m)}</td>`; });
+  tr.innerHTML = cells;
+  tbody.appendChild(tr);
+});
+
+// ─────────────────────────────────────────────
+// MOTIONS
+// ─────────────────────────────────────────────
+const PIE_COLORS  = { yes:'#22c55e', no:'#ef4444', abstain:'#94a3b8' };
+const BAR_COLORS  = { yes:'rgba(34,197,94,0.85)', no:'rgba(239,68,68,0.85)' };
+
+const container = document.getElementById('motions-container');
+
+motions.forEach((m, idx) => {
+  const pct  = yesPercent(m.yes, m.no);
+  const v    = verdictFromPct(pct);
+  const total = m.yes + m.no + m.abstain;
+
+  const card = document.createElement('div');
+  card.className = 'motion-card';
+
+  // verdict icon + text
+  const verdictHTML = v === 'yes'
+    ? `<div class="verdict yes-v"><span class="icon">&#10003;</span> Carolina Region is LIKELY VOTING YES (${pct.toFixed(1)}% in favor)</div>`
+    : `<div class="verdict no-v"><span class="icon">&#10007;</span> Carolina Region is LIKELY VOTING NO (${pct.toFixed(1)}% in favor)</div>`;
+
+  // per-area breakdown rows for this motion
+  const areaRows = areaData.map(area => {
+    const am = area.motions[idx];
+    return `<tr>
+      <td>${area.name}</td>
+      <td style="text-align:center;">${area.groups}</td>
+      <td style="text-align:center;color:#16a34a;font-weight:700;">${am.yes}</td>
+      <td style="text-align:center;color:#dc2626;font-weight:700;">${am.no}</td>
+      <td style="text-align:center;color:#94a3b8;font-weight:700;">${am.ab}</td>
+      <td style="text-align:center;">${areaBadge(am)}</td>
+    </tr>`;
+  }).join('');
+
+  card.innerHTML = `
+    <div class="motion-header">
+      <span class="motion-num">Motion ${m.num}</span>
+      <span class="motion-title">${m.title}</span>
+    </div>
+    <div class="motion-body">${m.text}</div>
+    <div class="motion-maker">${m.maker}</div>
+
+    ${verdictHTML}
+
+    <div class="vote-stats">
+      <div class="vs-item yes-c"><div class="vs-num">${m.yes}</div><div class="vs-lbl">Yes</div></div>
+      <div class="vs-sep">/</div>
+      <div class="vs-item no-c"><div class="vs-num">${m.no}</div><div class="vs-lbl">No</div></div>
+      <div class="vs-sep">/</div>
+      <div class="vs-item abs-c"><div class="vs-num">${m.abstain}</div><div class="vs-lbl">Abstain*</div></div>
+      <div class="vs-sep" style="margin: 0 .5rem;"></div>
+      <div class="pct-bar-wrap">
+        <div class="pct-lbl">Yes (excl. abstain) &mdash; ${pct.toFixed(1)}% &bull; ${total} total responses</div>
+        <div class="pct-bar"><div class="pct-fill yes-f" style="width:${pct.toFixed(1)}%"></div></div>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="chart-box">
+        <h4>Vote Distribution (Pie)</h4>
+        <div class="chart-canvas-wrap">
+          <canvas id="pie-${m.num}"></canvas>
+        </div>
+      </div>
+      <div class="chart-box">
+        <h4>Yes vs No (Excl. Abstain)</h4>
+        <div class="chart-canvas-wrap">
+          <canvas id="bar-${m.num}"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <details class="area-breakdown">
+      <summary>&#9660; Show per-area breakdown for Motion ${m.num}</summary>
+      <div class="area-tbl-wrap">
+        <table class="area-tbl">
+          <thead><tr>
+            <th>Area</th><th>Groups</th>
+            <th style="color:#16a34a;">Yes</th>
+            <th style="color:#dc2626;">No</th>
+            <th>Abstain</th>
+            <th>Summary</th>
+          </tr></thead>
+          <tbody>${areaRows}</tbody>
+        </table>
+      </div>
+    </details>
+  `;
+
+  container.appendChild(card);
+
+  // ── PIE CHART ──
+  const pieLabels = m.abstain > 0 ? ['Yes','No','Abstain'] : ['Yes','No'];
+  const pieData   = m.abstain > 0 ? [m.yes, m.no, m.abstain] : [m.yes, m.no];
+  const pieColors = m.abstain > 0
+    ? [PIE_COLORS.yes, PIE_COLORS.no, PIE_COLORS.abstain]
+    : [PIE_COLORS.yes, PIE_COLORS.no];
+
+  new Chart(document.getElementById(`pie-${m.num}`), {
+    type: 'pie',
+    data: {
+      labels: pieLabels,
+      datasets: [{ data: pieData, backgroundColor: pieColors, borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 12 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const val = ctx.parsed;
+              const ttl = pieData.reduce((a,b)=>a+b,0);
+              return ` ${ctx.label}: ${val} (${(val/ttl*100).toFixed(1)}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // ── BAR CHART ──
+  const yesPct = pct;
+  const noPct  = 100 - pct;
+  new Chart(document.getElementById(`bar-${m.num}`), {
+    type: 'bar',
+    data: {
+      labels: ['Yes', 'No'],
+      datasets: [{
+        label: 'Votes (excl. abstain)',
+        data: [m.yes, m.no],
+        backgroundColor: [BAR_COLORS.yes, BAR_COLORS.no],
+        borderRadius: 6,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const val = ctx.parsed.y;
+              const totActive = m.yes + m.no;
+              return ` ${val} votes (${(val/totActive*100).toFixed(1)}%)`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: Math.ceil(Math.max(m.yes, m.no) * 1.2),
+          ticks: { stepSize: 5 },
+          grid: { color: '#e2e8f0' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+});
+
+// ─────────────────────────────────────────────
+// AREA PARTICIPATION CHART (overview bar)
+// ─────────────────────────────────────────────
+</script>
+
+</body>
+</html>
