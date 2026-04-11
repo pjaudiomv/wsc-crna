@@ -85,29 +85,69 @@
       background: var(--surface2);
     }
 
-    /* ── THEME TOGGLE BUTTON ─────────────────────── */
+    /* ── THEME TOGGLE (fixed floating pill) ─────── */
     .theme-toggle {
-      margin-left: auto;
-      flex-shrink: 0;
-      background: transparent;
-      border: 1px solid var(--border);
+      position: fixed;
+      top: .8rem; right: 1rem;
+      z-index: 300;
+      background: rgba(13,21,32,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border2);
       border-radius: 999px;
-      padding: .3rem .75rem .3rem .55rem;
+      padding: .35rem .85rem .35rem .6rem;
       cursor: pointer;
       color: var(--text-muted);
       font-family: 'DM Mono', monospace;
       font-size: .65rem;
       letter-spacing: .06em;
       display: flex; align-items: center; gap: .4rem;
-      transition: background .2s, color .15s, border-color .2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      transition: background .2s, color .15s, border-color .2s, box-shadow .2s;
       white-space: nowrap;
     }
+    [data-theme="light"] .theme-toggle {
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    }
     .theme-toggle:hover {
-      background: rgba(128,160,200,0.1);
       color: var(--text);
-      border-color: var(--border2);
+      border-color: var(--gold);
+      box-shadow: 0 3px 16px rgba(0,0,0,0.4);
     }
     .theme-toggle .t-icon { font-size: .9rem; line-height: 1; }
+
+    /* ── NAV MOBILE SELECT ───────────────────────── */
+    .motion-select-wrap {
+      flex: 1; padding: .5rem 0; display: none;
+    }
+    .motion-select {
+      width: 100%;
+      appearance: none; -webkit-appearance: none;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      padding: .45rem 2rem .45rem .75rem;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238AAEC8'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right .65rem center;
+      background-size: 8px;
+    }
+    [data-theme="light"] .motion-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233A5A78'/%3E%3C/svg%3E");
+    }
+    .motion-select:focus { outline: none; border-color: var(--gold); }
+
+    @media (max-width: 660px) {
+      .nav-lbl         { display: none; }
+      .nav-pills-row   { display: none; }
+      .motion-select-wrap { display: block; }
+      .motion-nav-inner { padding: .4rem 1rem; }
+    }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; transition: background-color .25s, color .25s; }
@@ -695,17 +735,30 @@
 <nav class="motion-nav" aria-label="Motion navigation">
   <div class="motion-nav-inner">
     <span class="nav-lbl">Jump to</span>
-    <a href="#motion-1" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 1 — IP #21</a>
-    <a href="#motion-2" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 2 — Strategic Plan</a>
-    <a href="#motion-3" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 3 — WCNA Cycle</a>
-    <a href="#motion-4" class="nav-pill no-pill"><span class="nav-dot no"></span>Motion 4 — Inmate Literature</a>
-    <a href="#motion-5" class="nav-pill no-pill"><span class="nav-dot no"></span>Motion 5 — AI Interpretation</a>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
-      <span class="t-icon" id="theme-icon">&#9728;</span>
-      <span id="theme-label">Light</span>
-    </button>
+    <div class="nav-pills-row" style="display:flex;align-items:center;gap:.25rem;overflow-x:auto;">
+      <a href="#motion-1" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 1 — IP #21</a>
+      <a href="#motion-2" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 2 — Strategic Plan</a>
+      <a href="#motion-3" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 3 — WCNA Cycle</a>
+      <a href="#motion-4" class="nav-pill no-pill"><span class="nav-dot no"></span>Motion 4 — Inmate Literature</a>
+      <a href="#motion-5" class="nav-pill no-pill"><span class="nav-dot no"></span>Motion 5 — AI Interpretation</a>
+    </div>
+    <div class="motion-select-wrap">
+      <select class="motion-select" id="motion-select" aria-label="Jump to motion">
+        <option value="">Jump to motion&hellip;</option>
+        <option value="motion-1">✓ Motion 1 — IP #21</option>
+        <option value="motion-2">✓ Motion 2 — Strategic Plan</option>
+        <option value="motion-3">✓ Motion 3 — WCNA Cycle</option>
+        <option value="motion-4">✗ Motion 4 — Inmate Literature</option>
+        <option value="motion-5">✗ Motion 5 — AI Interpretation</option>
+      </select>
+    </div>
   </div>
 </nav>
+
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+  <span class="t-icon" id="theme-icon">&#9728;</span>
+  <span id="theme-label">Light</span>
+</button>
 
 <!-- ── MAIN ───────────────────────────────────────── -->
 <main>
@@ -1309,6 +1362,18 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
   applyTheme(next);
 });
+
+// Mobile select — scroll to section
+const motionSelect = document.getElementById('motion-select');
+if (motionSelect) {
+  motionSelect.addEventListener('change', e => {
+    const id = e.target.value;
+    if (id) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      e.target.value = '';
+    }
+  });
+}
 
 // Respect system changes when no manual override is stored
 window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
