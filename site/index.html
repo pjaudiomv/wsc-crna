@@ -739,7 +739,7 @@
       <a href="#motion-1" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 1 — IP #21</a>
       <a href="#motion-2" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 2 — Strategic Plan</a>
       <a href="#motion-3" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 3 — WCNA Cycle</a>
-      <a href="#motion-4" class="nav-pill no-pill"><span class="nav-dot no"></span>Motion 4 — Inmate Literature</a>
+      <a href="#motion-4" class="nav-pill yes-pill"><span class="nav-dot yes"></span>Motion 4 — Inmate Literature</a>
       <a href="#motion-5" class="nav-pill no-pill"><span class="nav-dot no"></span>Motion 5 — AI Interpretation</a>
     </div>
     <div class="motion-select-wrap">
@@ -748,7 +748,7 @@
         <option value="motion-1">✓ Motion 1 — IP #21</option>
         <option value="motion-2">✓ Motion 2 — Strategic Plan</option>
         <option value="motion-3">✓ Motion 3 — WCNA Cycle</option>
-        <option value="motion-4">✗ Motion 4 — Inmate Literature</option>
+        <option value="motion-4">✓ Motion 4 — Inmate Literature</option>
         <option value="motion-5">✗ Motion 5 — AI Interpretation</option>
       </select>
     </div>
@@ -872,7 +872,7 @@
     </div>
 
     <div class="note-box">
-      <strong>Methodology:</strong> Abstentions count as <strong>non-supporting votes</strong> — they are included in the total vote denominator, which lowers the Yes percentage. A motion is deemed <strong>Likely YES</strong> if &ge;80% of all votes cast (Yes + No + Abstain) are in favor.
+      <strong>Methodology:</strong> Abstentions count as <strong>non-supporting votes</strong> — they are included in the total vote denominator, which lowers the Yes percentage. A motion is deemed <strong>Likely YES</strong> if &gt;50% of all votes cast (Yes + No + Abstain) are in favor.
     </div>
 
     <div class="area-grid" id="area-grid"></div>
@@ -911,7 +911,7 @@ const MOTIONS = [
     title: 'Revised IP #21 — Staying Clean in Isolation',
     text: 'Approve the revised IP #21, Staying Clean in Isolation, contained in Addendum A, as Fellowship-approved recovery literature to replace the current IP #21, The Loner—Staying Clean in Isolation.',
     maker: 'Maker: World Board',
-    yes: 45, no: 2, abstain: 1
+    yes: 49, no: 2, abstain: 1
   },
   {
     num: 2,
@@ -919,7 +919,7 @@ const MOTIONS = [
     title: '2026–2029 NA World Services Strategic Plan',
     text: 'To adopt the collaboratively created 2026–2029 NA World Services Strategic Plan contained in Addendum B.',
     maker: 'Maker: World Board',
-    yes: 40, no: 5, abstain: 3
+    yes: 41, no: 6, abstain: 5
   },
   {
     num: 3,
@@ -927,7 +927,7 @@ const MOTIONS = [
     title: 'WCNA Every 5 Years Beginning 2028',
     text: 'To hold the World Convention of Narcotics Anonymous (WCNA) every 5 years, beginning in 2028. The location to be determined by the World Board based on fiscal and geographic considerations that lend themselves to, at minimum, a revenue-neutral event. (The specific changes to the WCNA Guidelines in GWSNA are shown in Addendum C.)',
     maker: 'Maker: World Board',
-    yes: 41, no: 7, abstain: 0
+    yes: 44, no: 8, abstain: 0
   },
   {
     num: 4,
@@ -935,7 +935,7 @@ const MOTIONS = [
     title: 'Literature for Incarcerated on Tablets — Research Plan',
     text: 'To direct the World Board to create a project plan for consideration at WSC 2029 to research and explore the opportunities and obstacles of providing book-length pieces of literature to the incarcerated, on tablets, in addition to the IPs and audio version of the Fifth Edition Basic Text that already exist on inmate tablets.',
     maker: 'Maker: Arizona Region | Co-makers: Florida, Ohio, Northern California, Southern California, Sweden, UK, Utah',
-    yes: 35, no: 13, abstain: 0
+    yes: 39, no: 13, abstain: 0
   },
   {
     num: 5,
@@ -943,7 +943,7 @@ const MOTIONS = [
     title: 'AI Interpretation for WSC Meetings',
     text: 'To direct the World Board to implement artificial intelligence (AI) interpretation solutions for WSC meetings (both in-person and virtual) to replace the current human live language interpretation.',
     maker: 'Maker: South Florida Region | Co-makers: Iran, UK, Nepal',
-    yes: 17, no: 27, abstain: 4
+    yes: 18, no: 29, abstain: 5
   }
 ];
 
@@ -1073,7 +1073,7 @@ const motionContainer = document.getElementById('motions-container');
 
 MOTIONS.forEach(m => {
   const pct   = yesPct(m.yes, m.no, m.abstain);
-  const isYes = pct >= 80;
+  const isYes = pct > 50;
   const total = m.yes + m.no + m.abstain;
   const numStr = String(m.num).padStart(2, '0');
 
