@@ -948,20 +948,23 @@ const MOTIONS = [
 ];
 
 // motions array: index 0 = Motion 1 … 4 = Motion 5 → { y, n, ab }
+// motions array: index 0 = Motion 1 … 4 = Motion 5 → { y, n, ab }
 const AREAS = [
-  { name:'Borderline Area',             g:4,  m:[{y:4,n:0,a:0},{y:4,n:0,a:0},{y:4,n:0,a:0},{y:2,n:2,a:0},{y:1,n:3,a:0}] },
-  { name:'Catawba Valley Area',         g:5,  m:[{y:5,n:0,a:0},{y:4,n:0,a:1},{y:5,n:0,a:0},{y:4,n:1,a:0},{y:1,n:4,a:0}] },
-  { name:'Central Carolina Area',       g:5,  m:[{y:3,n:2,a:0},{y:2,n:3,a:0},{y:3,n:2,a:0},{y:4,n:1,a:0},{y:3,n:2,a:0}] },
-  { name:'Central Piedmont Area',       g:1,  m:[{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0}] },
-  { name:'Coastal Carolina Area',       g:1,  m:[{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:0,n:1,a:0}] },
-  { name:'Gap Area',                    g:2,  m:[{y:2,n:0,a:0},{y:2,n:0,a:0},{y:2,n:0,a:0},{y:2,n:0,a:0},{y:1,n:0,a:1}] },
-  { name:'Greater Charlotte Area',      g:8,  m:[{y:7,n:0,a:1},{y:6,n:0,a:2},{y:5,n:3,a:0},{y:5,n:3,a:0},{y:2,n:4,a:2}] },
-  { name:'Greater Columbia Area',       g:5,  m:[{y:5,n:0,a:0},{y:5,n:0,a:0},{y:4,n:1,a:0},{y:4,n:1,a:0},{y:4,n:1,a:0}] },
-  { name:'Lake Norman Area',            g:4,  m:[{y:4,n:0,a:0},{y:4,n:0,a:0},{y:4,n:0,a:0},{y:1,n:3,a:0},{y:0,n:4,a:0}] },
-  { name:'Port City Area',              g:2,  m:[{y:2,n:0,a:0},{y:1,n:1,a:0},{y:2,n:0,a:0},{y:1,n:1,a:0},{y:0,n:2,a:0}] },
-  { name:'Sun City Area',               g:7,  m:[{y:7,n:0,a:0},{y:6,n:1,a:0},{y:7,n:0,a:0},{y:7,n:0,a:0},{y:3,n:3,a:1}] },
-  { name:'Twin City Area',              g:3,  m:[{y:3,n:0,a:0},{y:3,n:0,a:0},{y:2,n:1,a:0},{y:2,n:1,a:0},{y:1,n:2,a:0}] },
-  { name:'Western North Carolina Area', g:1,  m:[{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:0,n:1,a:0}] },
+  { name:'Borderline Area'            , g:4  , m:[{y:4,n:0,a:0},{y:4,n:0,a:0},{y:4,n:0,a:0},{y:2,n:2,a:0},{y:1,n:3,a:0}] },
+  { name:'Catawba Valley Area'        , g:5  , m:[{y:5,n:0,a:0},{y:4,n:0,a:1},{y:5,n:0,a:0},{y:4,n:1,a:0},{y:1,n:4,a:0}] },
+  { name:'Central Carolina Area'      , g:6  , m:[{y:3,n:3,a:0},{y:2,n:4,a:0},{y:4,n:2,a:0},{y:5,n:1,a:0},{y:4,n:2,a:0}] },
+  { name:'Central Piedmont Area'      , g:1  , m:[{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0}] },
+  { name:'Coastal Carolina Area'      , g:1  , m:[{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:1,n:0,a:0},{y:0,n:1,a:0}] },
+  { name:'Gap Area'                   , g:2  , m:[{y:2,n:0,a:0},{y:2,n:0,a:0},{y:2,n:0,a:0},{y:2,n:0,a:0},{y:1,n:0,a:1}] },
+  { name:'Greater Charlotte Area'     , g:8  , m:[{y:7,n:0,a:1},{y:6,n:0,a:2},{y:5,n:3,a:0},{y:5,n:3,a:0},{y:2,n:4,a:2}] },
+  { name:'Greater Columbia Area'      , g:6  , m:[{y:6,n:0,a:0},{y:6,n:0,a:0},{y:5,n:1,a:0},{y:5,n:1,a:0},{y:5,n:1,a:0}] },
+  { name:'Lake Norman Area'           , g:4  , m:[{y:4,n:0,a:0},{y:4,n:0,a:0},{y:4,n:0,a:0},{y:1,n:3,a:0},{y:0,n:4,a:0}] },
+  { name:'Lowcountry Area'            , g:2  , m:[{y:2,n:0,a:0},{y:2,n:0,a:0},{y:2,n:0,a:0},{y:1,n:1,a:0},{y:1,n:1,a:0}] },
+  { name:'Port City Area'             , g:4  , m:[{y:3,n:1,a:0},{y:2,n:1,a:1},{y:4,n:0,a:0},{y:2,n:2,a:0},{y:1,n:3,a:0}] },
+  { name:'Sun City Area'              , g:8  , m:[{y:8,n:0,a:0},{y:7,n:1,a:0},{y:8,n:0,a:0},{y:8,n:0,a:0},{y:3,n:4,a:1}] },
+  { name:'Twin City Area'             , g:2  , m:[{y:3,n:0,a:0},{y:3,n:0,a:0},{y:2,n:1,a:0},{y:2,n:1,a:0},{y:1,n:2,a:0}] },
+  { name:'Upper South Carolina Area'  , g:2  , m:[{y:2,n:0,a:0},{y:0,n:0,a:2},{y:2,n:0,a:0},{y:2,n:0,a:0},{y:1,n:1,a:0}] },
+  { name:'Western North Carolina Area', g:2  , m:[{y:2,n:0,a:0},{y:1,n:1,a:0},{y:1,n:1,a:0},{y:2,n:0,a:0},{y:0,n:1,a:1}] },
 ];
 
 /* ─────────────────────────────────────────────────────
